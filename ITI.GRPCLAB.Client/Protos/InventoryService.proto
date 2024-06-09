@@ -1,0 +1,46 @@
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+
+option csharp_namespace = "ITI.GRPCLAB.Client.Protos";
+
+service InventoryService{
+	rpc GetById(GetByIdRequest) returns (GetByIdResponse);
+	rpc AddProduct(ProductRequest) returns (ProductRequest);
+	rpc UpdateProduct(ProductRequest) returns (ProductRequest);
+	rpc AddBulkProducts(stream ProductRequest) returns (BulkResponse);
+	rpc getReport(ReportCriteria) returns(stream ProductRequest);
+}
+message GetByIdRequest{
+	int32 id = 1;
+}
+message GetByIdResponse{
+	bool result = 1;
+}
+
+message ProductRequest{
+	int32 id = 1;
+	string name = 2;
+	int32 price = 3 ;
+	int32 quantity = 4;
+	Category category = 5; 
+	google.protobuf.Timestamp expireDate = 6 ;
+}
+
+
+message BulkResponse{
+	int32 numOfProducts = 1;
+}
+
+message ReportCriteria {
+    Category category = 1;
+    bool isOrderedByPrice = 2;
+}
+
+enum Category {
+	food = 0 ; 
+	electronics = 1; 
+	furniture = 2;
+}
